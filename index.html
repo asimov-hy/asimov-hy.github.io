@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ========================================
+       THEME VARIABLES — edit colors here
+       ======================================== */
+    :root {
+      --bg: #f8f7f4;
+      --bg-card: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #6b6b6b;
+      --accent: #2d2d2d;
+      --border: #e2e0dc;
+      --tag-bg: #f0eee9;
+      --tag-text: #4a4a4a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+      --shadow-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #111110;
+      --bg-card: #1a1a19;
+      --text: #e8e6e1;
+      --text-muted: #8a8a8a;
+      --accent: #e8e6e1;
+      --border: #2a2a28;
+      --tag-bg: #252523;
+      --tag-text: #b0b0a8;
+      --shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+      --shadow-hover: 0 2px 8px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    /* ========================================
+       RESET & BASE
+       ======================================== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    /* ========================================
+       NAV
+       ======================================== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    nav .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    nav .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav .nav-links a {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    nav .nav-links a:hover { color: var(--text); }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: border-color var(--transition), background var(--transition);
+      color: var(--text);
+    }
+
+    .theme-toggle:hover {
+      background: var(--tag-bg);
+    }
+
+    /* ========================================
+       SECTIONS — shared
+       ======================================== */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* ========================================
+       ABOUT
+       ======================================== */
+    #about {
+      padding-top: 10rem;
+    }
+
+    #about h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    #about .bio {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 2rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .social-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: color var(--transition), border-color var(--transition);
+    }
+
+    .social-links a:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+
+    /* ========================================
+       PROJECTS
+       ======================================== */
+    #projects {
+      padding-bottom: 4rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+      box-shadow: var(--shadow);
+      transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition), background var(--transition);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .project-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow var(--transition),
+                  border-color var(--transition),
+                  background var(--transition);
+    }
+
+    .project-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .project-links a {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all var(--transition);
+    }
+
+    .project-links a:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+
+    .project-role {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+      font-style: italic;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1.2rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .project-tags span {
+      font-size: 0.7rem;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .loading-msg {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding: 3rem 0;
+    }
+
+    .error-msg {
+      text-align: center;
+      color: #c0392b;
+      font-size: 0.85rem;
+      padding: 3rem 0;
+    }
+
+    /* ========================================
+       FOOTER
+       ======================================== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: border-color var(--transition);
+    }
+
+    footer p {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ========================================
+       RESPONSIVE
+       ======================================== */
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+      nav .nav-links { gap: 1rem; }
+      section { padding: 4rem 1.2rem; }
+      #about { padding-top: 7rem; }
+      .project-header { flex-direction: column; }
+      .project-links { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav>
+    <a href="#about" class="logo">YOUR NAME</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">☀</button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <p class="section-label">About</p>
+
+    <!-- EDIT: Replace with your name -->
+    <h1>Hi, I'm Your Name</h1>
+
+    <!-- EDIT: Replace with your bio (2-3 sentences) -->
+    <p class="bio">
+      Write a short bio about yourself here. What do you build? What excites you?
+      What are you looking for? Keep it brief and genuine.
+    </p>
+
+    <!-- EDIT: Replace with your actual links -->
+    <div class="social-links">
+      <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:you@email.com">Email</a>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects">
+    <p class="section-label">Projects</p>
+    <div class="projects-grid" id="projectsGrid">
+      <p class="loading-msg">Loading projects...</p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <p>YOUR NAME · <span id="year"></span></p>
+  </footer>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script>
+    /* ---- Theme Toggle ---- */
+    const toggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+
+    function setTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      toggle.textContent = theme === 'dark' ? '☾' : '☀';
+      localStorage.setItem('theme', theme);
+    }
+
+    toggle.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Load saved theme
+    const saved = localStorage.getItem('theme');
+    if (saved) setTheme(saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+
+    /* ---- Footer Year ---- */
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---- Fetch & Render Projects ---- */
+    async function loadProjects() {
+      const grid = document.getElementById('projectsGrid');
+
+      try {
+        // Load your project config
+        const configRes = await fetch('projects.json');
+        if (!configRes.ok) throw new Error('Could not load projects.json');
+        const config = await configRes.json();
+
+        // Fetch repo data from GitHub API for each project
+        const projects = await Promise.all(
+          config.map(async (project) => {
+            try {
+              const res = await fetch(`https://api.github.com/repos/${project.repo}`);
+              if (!res.ok) throw new Error(`Repo not found: ${project.repo}`);
+              const repo = await res.json();
+              return { ...repo, ...project };
+            } catch (err) {
+              console.warn(err.message);
+              return { ...project, name: project.repo.split('/')[1], description: 'Could not load repo details.', html_url: `https://github.com/${project.repo}`, _failed: true };
+            }
+          })
+        );
+
+        // Render cards
+        grid.innerHTML = '';
+        projects.forEach((p, i) => {
+          const card = document.createElement('div');
+          card.className = 'project-card';
+          card.style.transitionDelay = `${i * 0.08}s`;
+
+          const links = `
+            <div class="project-links">
+              <a href="${p.html_url}" target="_blank" rel="noopener">Repo</a>
+              ${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Demo</a>` : ''}
+            </div>
+          `;
+
+          const tags = (p.tech || []).map(t => `<span>${t}</span>`).join('');
+
+          card.innerHTML = `
+            <div class="project-header">
+              <span class="project-name">${p.name}</span>
+              ${links}
+            </div>
+            <p class="project-role">${p.role}</p>
+            <p class="project-desc">${p.description || 'No description provided.'}</p>
+            <div class="project-tags">${tags}</div>
+          `;
+
+          grid.appendChild(card);
+        });
+
+        // Trigger scroll animations
+        observeCards();
+
+      } catch (err) {
+        grid.innerHTML = `<p class="error-msg">Failed to load projects. Make sure projects.json is in the same directory.</p>`;
+        console.error(err);
+      }
+    }
+
+    /* ---- Scroll Animations ---- */
+    function observeCards() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      document.querySelectorAll('.project-card').forEach((card) => observer.observe(card));
+    }
+
+    loadProjects();
+  </script>
+
+</body>
+</html>
