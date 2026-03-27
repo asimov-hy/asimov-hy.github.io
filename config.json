@@ -1,0 +1,30 @@
+{
+  "name": "Your Name",
+  "title": "Your Title (e.g., Full-Stack Developer)",
+  "bio": "Write a short bio about yourself here. What do you build? What excites you? What are you looking for?",
+  "social": [
+    { "label": "GitHub", "url": "https://github.com/yourusername" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/yourusername" },
+    { "label": "Email", "url": "mailto:you@email.com" }
+  ],
+  "projects": [
+    {
+      "repo": "yourusername/project-name",
+      "role": "Your Role (e.g., Lead Developer)",
+      "tech": ["Tech1", "Tech2", "Tech3"],
+      "demo": "https://your-demo-link.com"
+    },
+    {
+      "repo": "orgname/another-project",
+      "role": "Your Role (e.g., Frontend Developer)",
+      "tech": ["Tech1", "Tech2"],
+      "demo": null
+    },
+    {
+      "repo": "anotheraccount/project-three",
+      "role": "Your Role (e.g., Contributor)",
+      "tech": ["Tech1", "Tech2", "Tech3"],
+      "demo": "https://your-demo-link.com"
+    }
+  ]
+}
