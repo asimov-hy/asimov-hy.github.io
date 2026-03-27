@@ -99,10 +99,16 @@
     .projects-grid { display: grid; gap: 1.2rem; }
     .project-card {
       background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.8rem 2rem;
+      border-radius: var(--radius); overflow: hidden;
       box-shadow: var(--shadow); opacity: 0; transform: translateY(20px);
       transition: box-shadow var(--transition), transform var(--transition),
                   border-color var(--transition), background var(--transition);
+    }
+    .project-card .project-body { padding: 1.8rem 2rem; }
+    .project-img {
+      width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+      display: block; border-bottom: 1px solid var(--border);
+      transition: border-color var(--transition);
     }
     .project-card.visible {
       opacity: 1; transform: translateY(0);
@@ -248,16 +254,19 @@
           card.className = 'project-card';
           card.style.transitionDelay = `${i * 0.08}s`;
           card.innerHTML = `
-            <div class="project-header">
-              <span class="project-name">${p.name}</span>
-              <div class="project-links">
-                <a href="${p.html_url}" target="_blank" rel="noopener">Repo</a>
-                ${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Demo</a>` : ''}
+            ${p.image ? `<img class="project-img" src="${p.image}" alt="${p.name} screenshot" loading="lazy" />` : ''}
+            <div class="project-body">
+              <div class="project-header">
+                <span class="project-name">${p.name}</span>
+                <div class="project-links">
+                  <a href="${p.html_url}" target="_blank" rel="noopener">Repo</a>
+                  ${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Demo</a>` : ''}
+                </div>
               </div>
+              <p class="project-role">${p.role}</p>
+              <p class="project-desc">${p.description || 'No description provided.'}</p>
+              <div class="project-tags">${(p.tech || []).map(t => `<span>${t}</span>`).join('')}</div>
             </div>
-            <p class="project-role">${p.role}</p>
-            <p class="project-desc">${p.description || 'No description provided.'}</p>
-            <div class="project-tags">${(p.tech || []).map(t => `<span>${t}</span>`).join('')}</div>
           `;
           grid.appendChild(card);
         });
