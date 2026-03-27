@@ -1,33 +1,36 @@
 {
   "name": "Your Name",
-  "title": "Your Title (e.g., Full-Stack Developer)",
-  "bio": "Write a short bio about yourself here. What do you build? What excites you? What are you looking for?",
+  "title": "Developer | Aspiring Roboticist",
+  "bio": "Creating interactive experiences across software and robotics.",
   "social": [
     { "label": "GitHub", "url": "https://github.com/yourusername" },
-    { "label": "LinkedIn", "url": "https://linkedin.com/in/yourusername" },
     { "label": "Email", "url": "mailto:you@email.com" }
   ],
   "projects": [
     {
-      "repo": "yourusername/project-name",
-      "role": "Your Role (e.g., Lead Developer)",
-      "tech": ["Tech1", "Tech2", "Tech3"],
-      "demo": "https://your-demo-link.com",
-      "image": "assets/project-name.png"
+      "repo": "yourusername/PrettyEyes",
+      "name": "Pretty Eyes",
+      "description": "Pretty Eyes는 시각적으로 불편함이 있는 분들을 위한 쇼핑 도우미 어플리케이션입니다. 제품 탐지(Yolov5 기반), 제품 정보 제공(TTS 음성), 장바구니 및 QR코드 결제 기능을 통해 보다 편리한 쇼핑을 지원합니다.",
+      "role": "Front End Developer",
+      "tech": ["YOLO", "Python"],
+      "demo": null,
+      "images": ["assets/prettyeyes-1.png", "assets/prettyeyes-2.png"]
     },
     {
       "repo": "orgname/another-project",
-      "role": "Your Role (e.g., Frontend Developer)",
+      "role": "Your Role",
       "tech": ["Tech1", "Tech2"],
       "demo": null,
-      "image": "assets/another-project.png"
+      "images": ["assets/another-1.png"]
     },
     {
-      "repo": "anotheraccount/project-three",
-      "role": "Your Role (e.g., Contributor)",
-      "tech": ["Tech1", "Tech2", "Tech3"],
+      "repo": null,
+      "name": "Non-GitHub Project",
+      "description": "Projects without a GitHub repo work too. Just set repo to null.",
+      "role": "Solo Developer",
+      "tech": ["Tech1", "Tech2"],
       "demo": "https://your-demo-link.com",
-      "image": null
+      "images": []
     }
   ]
 }
