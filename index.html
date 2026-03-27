@@ -275,11 +275,17 @@
       try {
         const projects = await Promise.all(
           list.map(async (p) => {
-            /* If repo is provided as "owner/repo", try fetching from GitHub */
-            if (p.repo && p.repo.includes('/')) {
+            /* Normalize repo: accept full URLs or owner/repo shorthand */
+            let repoPath = p.repo;
+            if (repoPath && repoPath.startsWith('https://github.com/')) {
+              repoPath = repoPath.replace('https://github.com/', '').replace(/\/$/, '');
+            }
+
+            /* If we have a valid owner/repo path, try fetching from GitHub */
+            if (repoPath && repoPath.includes('/')) {
               try {
-                const r = await fetch(`https://api.github.com/repos/${p.repo}`);
-                if (!r.ok) throw new Error(`Not found: ${p.repo}`);
+                const r = await fetch(`https://api.github.com/repos/${repoPath}`);
+                if (!r.ok) throw new Error(`Not found: ${repoPath}`);
                 const repo = await r.json();
                 /* Config values override GitHub values */
                 return {
@@ -291,18 +297,18 @@
               } catch (e) {
                 console.warn(e.message);
                 return {
-                  name: p.name || p.repo.split('/')[1],
+                  name: p.name || repoPath.split('/').pop(),
                   description: p.description || 'Could not load repo details.',
-                  html_url: `https://github.com/${p.repo}`,
+                  html_url: `https://github.com/${repoPath}`,
                   ...p
                 };
               }
             }
             /* No repo or just a name — use config values only */
             return {
-              name: p.name || (p.repo ? p.repo : 'Untitled'),
+              name: p.name || (repoPath ? repoPath : 'Untitled'),
               description: p.description || '',
-              html_url: p.repo ? `https://github.com/${p.repo}` : null,
+              html_url: repoPath ? `https://github.com/${repoPath}` : null,
               ...p
             };
           })
