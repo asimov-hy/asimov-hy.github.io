@@ -105,11 +105,49 @@
                   border-color var(--transition), background var(--transition);
     }
     .project-card .project-body { padding: 1.8rem 2rem; }
-    .project-img {
-      width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
-      display: block; border-bottom: 1px solid var(--border);
+
+    /* Image gallery */
+    .project-gallery {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
       transition: border-color var(--transition);
     }
+    .project-gallery-track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .project-gallery-track img {
+      width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+      display: block; flex-shrink: 0;
+    }
+    .gallery-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); width: 32px; height: 32px;
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; opacity: 0;
+      transition: opacity var(--transition), background var(--transition),
+                  border-color var(--transition), color var(--transition);
+      z-index: 2;
+    }
+    .project-gallery:hover .gallery-btn { opacity: 1; }
+    .gallery-btn:hover { background: var(--tag-bg); }
+    .gallery-btn.prev { left: 8px; }
+    .gallery-btn.next { right: 8px; }
+    .gallery-dots {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 2;
+    }
+    .gallery-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-muted); opacity: 0.4;
+      transition: opacity var(--transition);
+    }
+    .gallery-dot.active { opacity: 1; }
+
     .project-card.visible {
       opacity: 1; transform: translateY(0);
       transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1),
@@ -155,6 +193,7 @@
       #about { padding-top: 7rem; }
       .project-header { flex-direction: column; }
       .project-links { align-self: flex-start; }
+      .gallery-btn { opacity: 1; }
     }
   </style>
 </head>
@@ -236,15 +275,36 @@
       try {
         const projects = await Promise.all(
           list.map(async (p) => {
-            try {
-              const r = await fetch(`https://api.github.com/repos/${p.repo}`);
-              if (!r.ok) throw new Error(`Not found: ${p.repo}`);
-              const repo = await r.json();
-              return { ...repo, ...p };
-            } catch (e) {
-              console.warn(e.message);
-              return { ...p, name: p.repo.split('/')[1], description: 'Could not load repo details.', html_url: `https://github.com/${p.repo}`, _failed: true };
+            /* If repo is provided as "owner/repo", try fetching from GitHub */
+            if (p.repo && p.repo.includes('/')) {
+              try {
+                const r = await fetch(`https://api.github.com/repos/${p.repo}`);
+                if (!r.ok) throw new Error(`Not found: ${p.repo}`);
+                const repo = await r.json();
+                /* Config values override GitHub values */
+                return {
+                  name: p.name || repo.name,
+                  description: p.description || repo.description,
+                  html_url: repo.html_url,
+                  ...p
+                };
+              } catch (e) {
+                console.warn(e.message);
+                return {
+                  name: p.name || p.repo.split('/')[1],
+                  description: p.description || 'Could not load repo details.',
+                  html_url: `https://github.com/${p.repo}`,
+                  ...p
+                };
+              }
             }
+            /* No repo or just a name — use config values only */
+            return {
+              name: p.name || (p.repo ? p.repo : 'Untitled'),
+              description: p.description || '',
+              html_url: p.repo ? `https://github.com/${p.repo}` : null,
+              ...p
+            };
           })
         );
 
@@ -253,26 +313,71 @@
           const card = document.createElement('div');
           card.className = 'project-card';
           card.style.transitionDelay = `${i * 0.08}s`;
+
+          /* Build image gallery */
+          const imgs = p.images || [];
+          let galleryHTML = '';
+          if (imgs.length === 1) {
+            galleryHTML = `
+              <div class="project-gallery">
+                <div class="project-gallery-track">
+                  <img src="${imgs[0]}" alt="${p.name} screenshot" loading="lazy" />
+                </div>
+              </div>`;
+          } else if (imgs.length > 1) {
+            const imgsMarkup = imgs.map(src => `<img src="${src}" alt="${p.name} screenshot" loading="lazy" />`).join('');
+            const dotsMarkup = imgs.map((_, j) => `<span class="gallery-dot${j === 0 ? ' active' : ''}" data-idx="${j}"></span>`).join('');
+            galleryHTML = `
+              <div class="project-gallery" data-count="${imgs.length}">
+                <div class="project-gallery-track">${imgsMarkup}</div>
+                <button class="gallery-btn prev" aria-label="Previous">‹</button>
+                <button class="gallery-btn next" aria-label="Next">›</button>
+                <div class="gallery-dots">${dotsMarkup}</div>
+              </div>`;
+          }
+
+          /* Build links */
+          let linksHTML = '';
+          if (p.html_url) linksHTML += `<a href="${p.html_url}" target="_blank" rel="noopener">Repo</a>`;
+          if (p.demo) linksHTML += `<a href="${p.demo}" target="_blank" rel="noopener">Demo</a>`;
+
           card.innerHTML = `
-            ${p.image ? `<img class="project-img" src="${p.image}" alt="${p.name} screenshot" loading="lazy" />` : ''}
+            ${galleryHTML}
             <div class="project-body">
               <div class="project-header">
                 <span class="project-name">${p.name}</span>
-                <div class="project-links">
-                  <a href="${p.html_url}" target="_blank" rel="noopener">Repo</a>
-                  ${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Demo</a>` : ''}
-                </div>
+                ${linksHTML ? `<div class="project-links">${linksHTML}</div>` : ''}
               </div>
-              <p class="project-role">${p.role}</p>
-              <p class="project-desc">${p.description || 'No description provided.'}</p>
+              ${p.role ? `<p class="project-role">${p.role}</p>` : ''}
+              ${p.description ? `<p class="project-desc">${p.description}</p>` : ''}
               <div class="project-tags">${(p.tech || []).map(t => `<span>${t}</span>`).join('')}</div>
             </div>
           `;
           grid.appendChild(card);
         });
+
+        /* Wire up galleries */
+        document.querySelectorAll('.project-gallery[data-count]').forEach(gallery => {
+          const track = gallery.querySelector('.project-gallery-track');
+          const dots = gallery.querySelectorAll('.gallery-dot');
+          const count = parseInt(gallery.dataset.count);
+          let current = 0;
+
+          function goTo(idx) {
+            current = (idx + count) % count;
+            track.style.transform = `translateX(-${current * 100}%)`;
+            dots.forEach((d, j) => d.classList.toggle('active', j === current));
+          }
+
+          gallery.querySelector('.prev').addEventListener('click', () => goTo(current - 1));
+          gallery.querySelector('.next').addEventListener('click', () => goTo(current + 1));
+          dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.idx))));
+        });
+
         observeCards();
       } catch (err) {
         grid.innerHTML = `<p class="error-msg">Failed to load projects.</p>`;
+        console.error(err);
       }
     }
 
