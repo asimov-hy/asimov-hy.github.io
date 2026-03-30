@@ -12,7 +12,6 @@
       "name": "Pretty Eyes",
       "description": "Pretty Eyes는 시각적으로 불편함이 있는 분들을 위한 쇼핑 도우미 어플리케이션입니다. 제품 탐지(Yolov5 기반), 제품 정보 제공(TTS 음성), 장바구니 및 QR코드 결제 기능을 통해 보다 편리한 쇼핑을 지원합니다.",
       "role": "Front End Developer",
-      "images": ["assets/prettyeyes-1.png", "assets/prettyeyes-2.png"]
     },
     {
       "repo": "https://github.com/QuivyGM/24-OS_Project2",
