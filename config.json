@@ -1,7 +1,13 @@
 {
   "name": "Minchan Kim",
-  "title": "Developer | Aspiring Roboticist",
-  "bio": "Creating interactive experiences across software and robotics.",
+  "title": {
+    "en": "Developer | Aspiring Roboticist",
+    "ko": "개발자 | 로봇 공학 지망생"
+  },
+  "bio": {
+    "en": "Creating interactive experiences across software and robotics.",
+    "ko": "소프트웨어와 로봇 공학을 넘나드는 인터랙티브 경험을 만들고 있습니다."
+  },
   "social": [
     { "label": "GitHub", "url": "https://github.com/yourusername" },
     { "label": "Email", "url": "mailto:you@email.com" }
@@ -10,59 +16,85 @@
     {
       "repo": "https://github.com/Hoogdle/PrettyEyes",
       "name": "Pretty Eyes",
-      "description": "Pretty Eyes는 시각적으로 불편함이 있는 분들을 위한 쇼핑 도우미 어플리케이션입니다. 제품 탐지(Yolov5 기반), 제품 정보 제공(TTS 음성), 장바구니 및 QR코드 결제 기능을 통해 보다 편리한 쇼핑을 지원합니다.",
-      "role": "Front End Developer, App developer",
-      "tag": mobile, Python
+      "description": {
+        "en": "A shopping assistant app for the visually impaired. Features product detection (YOLOv5), product info via TTS, cart and QR code payment for convenient shopping.",
+        "ko": "Pretty Eyes는 시각적으로 불편함이 있는 분들을 위한 쇼핑 도우미 어플리케이션입니다. 제품 탐지(Yolov5 기반), 제품 정보 제공(TTS 음성), 장바구니 및 QR코드 결제 기능을 통해 보다 편리한 쇼핑을 지원합니다."
+      },
+      "role": "Front End Developer, App Developer",
+      "tag": ["Mobile", "Python"]
     },
     {
       "repo": "https://github.com/QuivyGM/24-OS_Project2",
       "name": "Plantopia",
-      "description": "식물 판매 웹사이트",
+      "description": {
+        "en": "A plant selling website",
+        "ko": "식물 판매 웹사이트"
+      },
       "role": "Team Leader, Front End Developer",
-      "tag": JavaScript, html, CSS
+      "tag": ["JavaScript", "HTML", "CSS"]
     },
     {
       "repo": "https://github.com/QuivyGM/CG-24",
-      "name": "Non-GitHub Project",
-      "description": "Personal project learning and using js graphic",
-      "role": Personal Project
-      "tag": Graphics, JavaScript, three.js
-    },
-      {
-      "repo": "https://github.com/SDP25-No-1/SDP-202X",
-      "name": "202X",
-      "description": "파이썬 - 파이게임을 이용한 게임 개발",
-      "role": Github Manager, Main Architecture Developer
-      "tag": Python, Pygame,
-      "note": "https://github.com/autojjangs/No_1 - prototype /test version"
-    },
-          {
-      "repo": "https://github.com/asimov-hy/TSPC_GUI",
-      "name": "TSCP_GUI",
-      "description": "Scala 로봇 제어 gui",
-      "role": Sole Developer 
-      "tag": Python, Robotics,
-    },
-              {
-      "repo": "https://github.com/raewoo0908/HyPurity",
-      "name": "We-Meet: 보안",
-      "description": " 이 프로젝트는 Sigma 규칙을 Kibana Detection Rules로 변환하여 Elastic Stack 환경에서 보안 모니터링을 쉽게 구현할 수 있도록 도와줍니다. Sigma CLI를 완전히 통합하여 안정적이고 정확한 변환을 제공하며, 디렉터리 구조를 유지하면서 대량의 Sigma 규칙을 처리할 수 있습니다.",
-      "role": Blue Team Developer 
-      "tag": Python, Cyber Security
+      "name": "CG-24",
+      "description": {
+        "en": "Personal project learning and using JS graphics",
+        "ko": "JS 그래픽을 학습하고 활용한 개인 프로젝트"
+      },
+      "role": "Personal Project",
+      "tag": ["Graphics", "JavaScript", "Three.js"]
     },
     {
-      "repo": "in-progress",
+      "repo": "https://github.com/SDP25-No-1/SDP-202X",
+      "name": "202X",
+      "description": {
+        "en": "Game development using Python and Pygame",
+        "ko": "파이썬 - 파이게임을 이용한 게임 개발"
+      },
+      "role": "GitHub Manager, Main Architecture Developer",
+      "tag": ["Python", "Pygame"],
+      "note": "https://github.com/autojjangs/No_1 - prototype / test version"
+    },
+    {
+      "repo": "https://github.com/asimov-hy/TSPC_GUI",
+      "name": "TSPC_GUI",
+      "description": {
+        "en": "Scala robot control GUI",
+        "ko": "Scala 로봇 제어 GUI"
+      },
+      "role": "Sole Developer",
+      "tag": ["Python", "Robotics"]
+    },
+    {
+      "repo": "https://github.com/raewoo0908/HyPurity",
+      "name": "We-Meet: 보안",
+      "description": {
+        "en": "Converts Sigma rules to Kibana Detection Rules for easy security monitoring in Elastic Stack. Fully integrates Sigma CLI for stable and accurate conversion, handling bulk Sigma rules while maintaining directory structure.",
+        "ko": "이 프로젝트는 Sigma 규칙을 Kibana Detection Rules로 변환하여 Elastic Stack 환경에서 보안 모니터링을 쉽게 구현할 수 있도록 도와줍니다. Sigma CLI를 완전히 통합하여 안정적이고 정확한 변환을 제공하며, 디렉터리 구조를 유지하면서 대량의 Sigma 규칙을 처리할 수 있습니다."
+      },
+      "role": "Blue Team Developer",
+      "tag": ["Python", "Cyber Security"]
+    },
+    {
+      "repo": null,
       "name": "Alice-M: Humanoid AI Project",
-      "description": "Nvidia-GR00T: Humanoid Project (simpilified for security concerns)",
-      "role": Developer 
-      "tag": Python, Nvidia-GR00T, Robotics
+      "description": {
+        "en": "Nvidia-GR00T: Humanoid Project (simplified for security concerns)",
+        "ko": "Nvidia-GR00T: 휴머노이드 프로젝트 (보안상 간소화)"
+      },
+      "role": "Developer",
+      "tag": ["Python", "Nvidia-GR00T", "Robotics"],
+      "note": "In progress"
     },
-        {
-      "repo": "in-progress",
-      "name": "Capstone: HRI assembly assist using robot arm",
-      "description": "Assist on non-industrail assembly line using lerobot arm. read manual",
-      "role": Sole Developer
-      "tag": Python, Robotics, Lerobot
-    },
+    {
+      "repo": null,
+      "name": "Capstone: HRI Assembly Assist",
+      "description": {
+        "en": "Assist on non-industrial assembly line using LeRobot arm. Read manual.",
+        "ko": "LeRobot 팔을 이용한 비산업용 조립 라인 보조. 매뉴얼 읽기."
+      },
+      "role": "Sole Developer",
+      "tag": ["Python", "Robotics", "LeRobot"],
+      "note": "In progress"
+    }
   ]
 }
