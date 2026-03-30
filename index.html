@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,6 +17,8 @@
       --border: #e2e0dc;
       --tag-bg: #f0eee9;
       --tag-text: #4a4a4a;
+      --note-bg: #faf8f0;
+      --note-border: #e8e4d4;
       --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
       --shadow-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
       --radius: 12px;
@@ -32,6 +34,8 @@
       --border: #2a2a28;
       --tag-bg: #252523;
       --tag-text: #b0b0a8;
+      --note-bg: #1e1e1a;
+      --note-border: #33332e;
       --shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
       --shadow-hover: 0 2px 8px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.25);
     }
@@ -46,6 +50,7 @@
       transition: background var(--transition), color var(--transition);
     }
 
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
@@ -58,21 +63,32 @@
       font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem;
       letter-spacing: -0.02em; color: var(--text); text-decoration: none;
     }
-    nav .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    nav .nav-links { display: flex; align-items: center; gap: 1.5rem; list-style: none; }
     nav .nav-links a {
       font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
       color: var(--text-muted); text-decoration: none; transition: color var(--transition);
     }
     nav .nav-links a:hover { color: var(--text); }
-    .theme-toggle {
-      background: none; border: 1px solid var(--border); border-radius: 50%;
-      width: 36px; height: 36px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: var(--text);
-      transition: border-color var(--transition), background var(--transition);
-    }
-    .theme-toggle:hover { background: var(--tag-bg); }
 
+    .nav-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+    .theme-toggle, .lang-toggle {
+      background: none; border: 1px solid var(--border);
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text);
+      transition: border-color var(--transition), background var(--transition), color var(--transition);
+    }
+    .theme-toggle { width: 36px; height: 36px; font-size: 1rem; }
+    .lang-toggle {
+      width: 36px; height: 36px;
+      font-size: 0.65rem; font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: -0.02em;
+    }
+    .theme-toggle:hover, .lang-toggle:hover { background: var(--tag-bg); }
+
+    /* SECTIONS */
     section { max-width: 860px; margin: 0 auto; padding: 6rem 2rem; }
     .section-label {
       font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
@@ -80,6 +96,7 @@
       color: var(--text-muted); margin-bottom: 2rem;
     }
 
+    /* ABOUT */
     #about { padding-top: 10rem; }
     #about h1 {
       font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem);
@@ -95,6 +112,7 @@
     }
     .social-links a:hover { color: var(--text); border-color: var(--text); }
 
+    /* PROJECTS */
     #projects { padding-bottom: 4rem; }
     .projects-grid { display: grid; gap: 1.2rem; }
     .project-card {
@@ -108,9 +126,7 @@
 
     /* Image gallery */
     .project-gallery {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
+      position: relative; width: 100%; overflow: hidden;
       border-bottom: 1px solid var(--border);
       transition: border-color var(--transition);
     }
@@ -144,7 +160,7 @@
     .gallery-dot {
       width: 6px; height: 6px; border-radius: 50%;
       background: var(--text-muted); opacity: 0.4;
-      transition: opacity var(--transition);
+      transition: opacity var(--transition); cursor: pointer;
     }
     .gallery-dot.active { opacity: 1; }
 
@@ -160,7 +176,10 @@
       display: flex; justify-content: space-between; align-items: flex-start;
       gap: 1rem; margin-bottom: 0.6rem;
     }
-    .project-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1.15rem; letter-spacing: -0.01em; }
+    .project-name {
+      font-family: 'Syne', sans-serif; font-weight: 600;
+      font-size: 1.15rem; letter-spacing: -0.01em;
+    }
     .project-links { display: flex; gap: 0.8rem; flex-shrink: 0; }
     .project-links a {
       font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
@@ -169,8 +188,26 @@
       transition: all var(--transition);
     }
     .project-links a:hover { color: var(--text); border-color: var(--text); }
-    .project-role { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.8rem; font-style: italic; }
-    .project-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+    .project-role {
+      font-size: 0.78rem; color: var(--text-muted);
+      margin-bottom: 0.8rem; font-style: italic;
+    }
+    .project-desc {
+      font-size: 0.88rem; color: var(--text-muted);
+      line-height: 1.65; margin-bottom: 1.2rem;
+    }
+    .project-note {
+      font-size: 0.78rem; color: var(--text-muted);
+      background: var(--note-bg); border-left: 3px solid var(--note-border);
+      padding: 0.6rem 1rem; margin-bottom: 1.2rem;
+      border-radius: 0 6px 6px 0;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .project-note a {
+      color: var(--text-muted); text-decoration: underline;
+      transition: color var(--transition);
+    }
+    .project-note a:hover { color: var(--text); }
     .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .project-tags span {
       font-size: 0.7rem; background: var(--tag-bg); color: var(--tag-text);
@@ -180,12 +217,17 @@
     .loading-msg { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 3rem 0; }
     .error-msg { text-align: center; color: #c0392b; font-size: 0.85rem; padding: 3rem 0; }
 
+    /* FOOTER */
     footer {
       border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center;
       transition: border-color var(--transition);
     }
-    footer p { font-family: 'Syne', sans-serif; font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.02em; }
+    footer p {
+      font-family: 'Syne', sans-serif; font-size: 0.8rem;
+      color: var(--text-muted); letter-spacing: 0.02em;
+    }
 
+    /* RESPONSIVE */
     @media (max-width: 600px) {
       nav { padding: 1rem 1.2rem; }
       nav .nav-links { gap: 1rem; }
@@ -202,14 +244,19 @@
   <nav>
     <a href="#about" class="logo" id="navName"></a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">☀</button></li>
+      <li><a href="#about" data-i18n-about>About</a></li>
+      <li><a href="#projects" data-i18n-projects>Projects</a></li>
+      <li>
+        <div class="nav-controls">
+          <button class="lang-toggle" id="langToggle" aria-label="Toggle language">EN</button>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">☀</button>
+        </div>
+      </li>
     </ul>
   </nav>
 
   <section id="about">
-    <p class="section-label">About</p>
+    <p class="section-label" data-i18n-about-label>About</p>
     <h1 id="aboutName"></h1>
     <p class="title" id="aboutTitle"></p>
     <p class="bio" id="aboutBio"></p>
@@ -217,7 +264,7 @@
   </section>
 
   <section id="projects">
-    <p class="section-label">Projects</p>
+    <p class="section-label" data-i18n-projects-label>Projects</p>
     <div class="projects-grid" id="projectsGrid">
       <p class="loading-msg">Loading projects...</p>
     </div>
@@ -228,163 +275,204 @@
   </footer>
 
   <script>
-    /* Theme Toggle */
-    const toggle = document.getElementById('themeToggle');
-    const root = document.documentElement;
-    function setTheme(t) {
-      root.setAttribute('data-theme', t);
-      toggle.textContent = t === 'dark' ? '☾' : '☀';
-      localStorage.setItem('theme', t);
+    /* ======== STATE ======== */
+    let CONFIG = null;
+    let LANG = localStorage.getItem('lang') || 'en';
+
+    /* ======== HELPERS ======== */
+    /* Resolve a field that can be a string or {en, ko} object */
+    function t(field) {
+      if (!field) return '';
+      if (typeof field === 'string') return field;
+      return field[LANG] || field['en'] || field['ko'] || '';
     }
-    toggle.addEventListener('click', () => {
+
+    /* Auto-link URLs inside a text string */
+    function linkify(text) {
+      return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    }
+
+    /* ======== THEME ======== */
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    function setTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      themeToggle.textContent = theme === 'dark' ? '☾' : '☀';
+      localStorage.setItem('theme', theme);
+    }
+    themeToggle.addEventListener('click', () => {
       setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     });
-    const saved = localStorage.getItem('theme');
-    if (saved) setTheme(saved);
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) setTheme(savedTheme);
     else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
 
+    /* ======== LANGUAGE ======== */
+    const langToggle = document.getElementById('langToggle');
+
+    function setLang(lang) {
+      LANG = lang;
+      root.setAttribute('data-lang', lang);
+      langToggle.textContent = lang.toUpperCase();
+      localStorage.setItem('lang', lang);
+
+      /* Update static labels */
+      const labels = { en: { about: 'About', projects: 'Projects' }, ko: { about: '소개', projects: '프로젝트' } };
+      const l = labels[lang] || labels['en'];
+      document.querySelector('[data-i18n-about]').textContent = l.about;
+      document.querySelector('[data-i18n-projects]').textContent = l.projects;
+      document.querySelector('[data-i18n-about-label]').textContent = l.about;
+      document.querySelector('[data-i18n-projects-label]').textContent = l.projects;
+
+      /* Re-render dynamic content if config is loaded */
+      if (CONFIG) renderAll(CONFIG);
+    }
+
+    langToggle.addEventListener('click', () => {
+      setLang(LANG === 'en' ? 'ko' : 'en');
+    });
+
+    /* ======== FOOTER YEAR ======== */
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    /* Load everything from config.json */
+    /* ======== INIT ======== */
     async function init() {
       try {
         const res = await fetch('config.json');
         if (!res.ok) throw new Error('Could not load config.json');
-        const c = await res.json();
+        CONFIG = await res.json();
 
-        document.title = `${c.name} — Portfolio`;
-        document.getElementById('navName').textContent = c.name;
-        document.getElementById('aboutName').textContent = `Hi, I'm ${c.name}`;
-        document.getElementById('aboutTitle').textContent = c.title;
-        document.getElementById('aboutBio').textContent = c.bio;
-        document.getElementById('footerName').textContent = c.name;
+        /* Fetch GitHub data once and cache it */
+        CONFIG._repoCache = {};
+        await Promise.all(
+          (CONFIG.projects || []).map(async (p) => {
+            let repoPath = p.repo;
+            if (!repoPath || repoPath === 'in-progress') return;
+            if (repoPath.startsWith('https://github.com/')) {
+              repoPath = repoPath.replace('https://github.com/', '').replace(/\/$/, '');
+            }
+            if (!repoPath.includes('/')) return;
+            try {
+              const r = await fetch(`https://api.github.com/repos/${repoPath}`);
+              if (r.ok) CONFIG._repoCache[p.repo] = await r.json();
+            } catch (e) { console.warn(e.message); }
+          })
+        );
 
-        const sl = document.getElementById('socialLinks');
-        (c.social || []).forEach(s => {
-          sl.innerHTML += `<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`;
-        });
-
-        await loadProjects(c.projects);
+        setLang(LANG);
       } catch (err) {
         console.error('Failed to load config:', err);
       }
     }
 
-    async function loadProjects(list) {
+    /* ======== RENDER ======== */
+    function renderAll(c) {
+      document.title = `${c.name} — Portfolio`;
+      document.getElementById('navName').textContent = c.name;
+      document.getElementById('aboutName').textContent = LANG === 'ko'
+        ? `안녕하세요, ${c.name}입니다`
+        : `Hi, I'm ${c.name}`;
+      document.getElementById('aboutTitle').textContent = t(c.title);
+      document.getElementById('aboutBio').textContent = t(c.bio);
+      document.getElementById('footerName').textContent = c.name;
+
+      /* Social links */
+      const sl = document.getElementById('socialLinks');
+      sl.innerHTML = '';
+      (c.social || []).forEach(s => {
+        sl.innerHTML += `<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`;
+      });
+
+      /* Projects */
+      renderProjects(c.projects || []);
+    }
+
+    function renderProjects(list) {
       const grid = document.getElementById('projectsGrid');
-      try {
-        const projects = await Promise.all(
-          list.map(async (p) => {
-            /* Normalize repo: accept full URLs or owner/repo shorthand */
-            let repoPath = p.repo;
-            if (repoPath && repoPath.startsWith('https://github.com/')) {
-              repoPath = repoPath.replace('https://github.com/', '').replace(/\/$/, '');
-            }
+      grid.innerHTML = '';
 
-            /* If we have a valid owner/repo path, try fetching from GitHub */
-            if (repoPath && repoPath.includes('/')) {
-              try {
-                const r = await fetch(`https://api.github.com/repos/${repoPath}`);
-                if (!r.ok) throw new Error(`Not found: ${repoPath}`);
-                const repo = await r.json();
-                /* Config values override GitHub values */
-                return {
-                  name: p.name || repo.name,
-                  description: p.description || repo.description,
-                  html_url: repo.html_url,
-                  ...p
-                };
-              } catch (e) {
-                console.warn(e.message);
-                return {
-                  name: p.name || repoPath.split('/').pop(),
-                  description: p.description || 'Could not load repo details.',
-                  html_url: `https://github.com/${repoPath}`,
-                  ...p
-                };
-              }
-            }
-            /* No repo or just a name — use config values only */
-            return {
-              name: p.name || (repoPath ? repoPath : 'Untitled'),
-              description: p.description || '',
-              html_url: repoPath ? `https://github.com/${repoPath}` : null,
-              ...p
-            };
-          })
-        );
+      list.forEach((p, i) => {
+        /* Resolve repo path */
+        let repoPath = p.repo;
+        let isInProgress = (!repoPath || repoPath === 'in-progress');
+        if (repoPath && repoPath.startsWith('https://github.com/')) {
+          repoPath = repoPath.replace('https://github.com/', '').replace(/\/$/, '');
+        }
 
-        grid.innerHTML = '';
-        projects.forEach((p, i) => {
-          const card = document.createElement('div');
-          card.className = 'project-card';
-          card.style.transitionDelay = `${i * 0.08}s`;
+        /* Get cached GitHub data */
+        const gh = CONFIG._repoCache[p.repo] || null;
 
-          /* Build image gallery */
-          const imgs = p.images || [];
-          let galleryHTML = '';
-          if (imgs.length === 1) {
-            galleryHTML = `
-              <div class="project-gallery">
-                <div class="project-gallery-track">
-                  <img src="${imgs[0]}" alt="${p.name} screenshot" loading="lazy" />
-                </div>
-              </div>`;
-          } else if (imgs.length > 1) {
-            const imgsMarkup = imgs.map(src => `<img src="${src}" alt="${p.name} screenshot" loading="lazy" />`).join('');
-            const dotsMarkup = imgs.map((_, j) => `<span class="gallery-dot${j === 0 ? ' active' : ''}" data-idx="${j}"></span>`).join('');
-            galleryHTML = `
-              <div class="project-gallery" data-count="${imgs.length}">
-                <div class="project-gallery-track">${imgsMarkup}</div>
-                <button class="gallery-btn prev" aria-label="Previous">‹</button>
-                <button class="gallery-btn next" aria-label="Next">›</button>
-                <div class="gallery-dots">${dotsMarkup}</div>
-              </div>`;
-          }
+        const name = p.name || (gh ? gh.name : (repoPath ? repoPath.split('/').pop() : 'Untitled'));
+        const desc = t(p.description) || (gh ? gh.description : '');
+        const htmlUrl = gh ? gh.html_url : (repoPath && repoPath.includes('/') ? `https://github.com/${repoPath}` : null);
 
-          /* Build links */
-          let linksHTML = '';
-          if (p.html_url) linksHTML += `<a href="${p.html_url}" target="_blank" rel="noopener">Repo</a>`;
-          if (p.demo) linksHTML += `<a href="${p.demo}" target="_blank" rel="noopener">Demo</a>`;
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.style.transitionDelay = `${i * 0.08}s`;
 
-          card.innerHTML = `
-            ${galleryHTML}
-            <div class="project-body">
-              <div class="project-header">
-                <span class="project-name">${p.name}</span>
-                ${linksHTML ? `<div class="project-links">${linksHTML}</div>` : ''}
+        /* Gallery */
+        const imgs = p.images || [];
+        let galleryHTML = '';
+        if (imgs.length === 1) {
+          galleryHTML = `
+            <div class="project-gallery">
+              <div class="project-gallery-track">
+                <img src="${imgs[0]}" alt="${name} screenshot" loading="lazy" />
               </div>
-              ${p.role ? `<p class="project-role">${p.role}</p>` : ''}
-              ${p.description ? `<p class="project-desc">${p.description}</p>` : ''}
-              <div class="project-tags">${(p.tech || []).map(t => `<span>${t}</span>`).join('')}</div>
+            </div>`;
+        } else if (imgs.length > 1) {
+          const imgsMarkup = imgs.map(src => `<img src="${src}" alt="${name} screenshot" loading="lazy" />`).join('');
+          const dotsMarkup = imgs.map((_, j) => `<span class="gallery-dot${j === 0 ? ' active' : ''}" data-idx="${j}"></span>`).join('');
+          galleryHTML = `
+            <div class="project-gallery" data-count="${imgs.length}">
+              <div class="project-gallery-track">${imgsMarkup}</div>
+              <button class="gallery-btn prev" aria-label="Previous">‹</button>
+              <button class="gallery-btn next" aria-label="Next">›</button>
+              <div class="gallery-dots">${dotsMarkup}</div>
+            </div>`;
+        }
+
+        /* Links */
+        let linksHTML = '';
+        if (!isInProgress && htmlUrl) linksHTML += `<a href="${htmlUrl}" target="_blank" rel="noopener">Repo</a>`;
+        if (p.demo) linksHTML += `<a href="${p.demo}" target="_blank" rel="noopener">Demo</a>`;
+
+        /* Note */
+        const noteText = p.note ? linkify(p.note) : '';
+
+        card.innerHTML = `
+          ${galleryHTML}
+          <div class="project-body">
+            <div class="project-header">
+              <span class="project-name">${name}</span>
+              ${linksHTML ? `<div class="project-links">${linksHTML}</div>` : ''}
             </div>
-          `;
-          grid.appendChild(card);
-        });
+            ${p.role ? `<p class="project-role">${p.role}</p>` : ''}
+            ${desc ? `<p class="project-desc">${desc}</p>` : ''}
+            ${noteText ? `<p class="project-note">${noteText}</p>` : ''}
+            <div class="project-tags">${(p.tag || []).map(t => `<span>${t}</span>`).join('')}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
 
-        /* Wire up galleries */
-        document.querySelectorAll('.project-gallery[data-count]').forEach(gallery => {
-          const track = gallery.querySelector('.project-gallery-track');
-          const dots = gallery.querySelectorAll('.gallery-dot');
-          const count = parseInt(gallery.dataset.count);
-          let current = 0;
+      /* Wire up galleries */
+      document.querySelectorAll('.project-gallery[data-count]').forEach(gallery => {
+        const track = gallery.querySelector('.project-gallery-track');
+        const dots = gallery.querySelectorAll('.gallery-dot');
+        const count = parseInt(gallery.dataset.count);
+        let current = 0;
+        function goTo(idx) {
+          current = (idx + count) % count;
+          track.style.transform = `translateX(-${current * 100}%)`;
+          dots.forEach((d, j) => d.classList.toggle('active', j === current));
+        }
+        gallery.querySelector('.prev').addEventListener('click', () => goTo(current - 1));
+        gallery.querySelector('.next').addEventListener('click', () => goTo(current + 1));
+        dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.idx))));
+      });
 
-          function goTo(idx) {
-            current = (idx + count) % count;
-            track.style.transform = `translateX(-${current * 100}%)`;
-            dots.forEach((d, j) => d.classList.toggle('active', j === current));
-          }
-
-          gallery.querySelector('.prev').addEventListener('click', () => goTo(current - 1));
-          gallery.querySelector('.next').addEventListener('click', () => goTo(current + 1));
-          dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.idx))));
-        });
-
-        observeCards();
-      } catch (err) {
-        grid.innerHTML = `<p class="error-msg">Failed to load projects.</p>`;
-        console.error(err);
-      }
+      observeCards();
     }
 
     function observeCards() {
