@@ -125,6 +125,30 @@
 
     /* PROJECTS */
     #projects { padding-bottom: 4rem; }
+
+    /* Tag filter */
+    .tag-filter {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;
+    }
+    .tag-filter-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.02em;
+      background: var(--tag-bg); color: var(--tag-text);
+      border: 1px solid transparent; padding: 5px 12px;
+      border-radius: 6px; cursor: pointer;
+      transition: all var(--transition);
+    }
+    .tag-filter-btn:hover {
+      border-color: var(--border); color: var(--text);
+    }
+    .tag-filter-btn.active {
+      background: var(--text); color: var(--bg);
+      border-color: var(--text);
+    }
+    .project-card.filtered-out {
+      display: none;
+    }
+
     .projects-grid { display: grid; gap: 1.2rem; }
     .project-card {
       background: var(--bg-card); border: 1px solid var(--border);
@@ -276,6 +300,7 @@
 
   <section id="projects">
     <p class="section-label" data-i18n-projects-label>Projects</p>
+    <div class="tag-filter" id="tagFilter"></div>
     <div class="projects-grid" id="projectsGrid">
       <p class="loading-msg">Loading projects...</p>
     </div>
@@ -425,9 +450,47 @@
       renderProjects(c.projects || []);
     }
 
+    let activeTag = null;
+
     function renderProjects(list) {
       const grid = document.getElementById('projectsGrid');
+      const filterContainer = document.getElementById('tagFilter');
       grid.innerHTML = '';
+
+      /* Collect all unique tags */
+      const allTags = new Set();
+      list.forEach(p => (p.tag || []).forEach(t => allTags.add(t)));
+      const sortedTags = [...allTags].sort();
+
+      /* Build tag filter buttons */
+      filterContainer.innerHTML = '';
+      const allBtn = document.createElement('button');
+      allBtn.className = `tag-filter-btn${!activeTag ? ' active' : ''}`;
+      allBtn.textContent = LANG === 'ko' ? '전체' : 'All';
+      allBtn.addEventListener('click', () => { activeTag = null; applyFilter(); });
+      filterContainer.appendChild(allBtn);
+
+      sortedTags.forEach(tag => {
+        const btn = document.createElement('button');
+        btn.className = `tag-filter-btn${activeTag === tag ? ' active' : ''}`;
+        btn.textContent = tag;
+        btn.addEventListener('click', () => { activeTag = tag; applyFilter(); });
+        filterContainer.appendChild(btn);
+      });
+
+      function applyFilter() {
+        /* Update button states */
+        filterContainer.querySelectorAll('.tag-filter-btn').forEach((btn, idx) => {
+          if (idx === 0) btn.classList.toggle('active', !activeTag);
+          else btn.classList.toggle('active', btn.textContent === activeTag);
+        });
+        /* Show/hide cards */
+        grid.querySelectorAll('.project-card').forEach(card => {
+          const tags = JSON.parse(card.dataset.tags || '[]');
+          const show = !activeTag || tags.includes(activeTag);
+          card.classList.toggle('filtered-out', !show);
+        });
+      }
 
       list.forEach((p, i) => {
         /* Resolve repo path */
@@ -446,6 +509,7 @@
 
         const card = document.createElement('div');
         card.className = 'project-card';
+        card.dataset.tags = JSON.stringify(p.tag || []);
         card.style.transitionDelay = `${i * 0.08}s`;
 
         /* Gallery */
@@ -509,6 +573,9 @@
         gallery.querySelector('.next').addEventListener('click', () => goTo(current + 1));
         dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.idx))));
       });
+
+      /* Apply active filter */
+      applyFilter();
 
       observeCards();
     }
