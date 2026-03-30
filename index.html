@@ -88,6 +88,17 @@
     }
     .theme-toggle:hover, .lang-toggle:hover { background: var(--tag-bg); }
 
+    /* Language transition */
+    .lang-fade {
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .lang-fade.lang-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* SECTIONS */
     section { max-width: 860px; margin: 0 auto; padding: 6rem 2rem; }
     .section-label {
@@ -310,26 +321,53 @@
     /* ======== LANGUAGE ======== */
     const langToggle = document.getElementById('langToggle');
 
-    function setLang(lang) {
+    function setLang(lang, animate) {
       LANG = lang;
       root.setAttribute('data-lang', lang);
       langToggle.textContent = lang.toUpperCase();
       localStorage.setItem('lang', lang);
 
-      /* Update static labels */
-      const labels = { en: { about: 'About', projects: 'Projects' }, ko: { about: '소개', projects: '프로젝트' } };
-      const l = labels[lang] || labels['en'];
-      document.querySelector('[data-i18n-about]').textContent = l.about;
-      document.querySelector('[data-i18n-projects]').textContent = l.projects;
-      document.querySelector('[data-i18n-about-label]').textContent = l.about;
-      document.querySelector('[data-i18n-projects-label]').textContent = l.projects;
+      function applyContent() {
+        /* Update static labels */
+        const labels = { en: { about: 'About', projects: 'Projects' }, ko: { about: '소개', projects: '프로젝트' } };
+        const l = labels[lang] || labels['en'];
+        document.querySelector('[data-i18n-about]').textContent = l.about;
+        document.querySelector('[data-i18n-projects]').textContent = l.projects;
+        document.querySelector('[data-i18n-about-label]').textContent = l.about;
+        document.querySelector('[data-i18n-projects-label]').textContent = l.projects;
 
-      /* Re-render dynamic content if config is loaded */
-      if (CONFIG) renderAll(CONFIG);
+        /* Re-render dynamic content if config is loaded */
+        if (CONFIG) renderAll(CONFIG);
+      }
+
+      if (!animate) {
+        applyContent();
+        return;
+      }
+
+      /* Fade out, swap, fade in */
+      const targets = document.querySelectorAll('#about, #projects, nav .nav-links');
+      targets.forEach(el => {
+        el.classList.add('lang-fade');
+        el.classList.remove('lang-visible');
+      });
+
+      setTimeout(() => {
+        applyContent();
+        targets.forEach(el => {
+          el.classList.add('lang-visible');
+        });
+        /* Clean up classes after transition */
+        setTimeout(() => {
+          targets.forEach(el => {
+            el.classList.remove('lang-fade', 'lang-visible');
+          });
+        }, 300);
+      }, 250);
     }
 
     langToggle.addEventListener('click', () => {
-      setLang(LANG === 'en' ? 'ko' : 'en');
+      setLang(LANG === 'en' ? 'ko' : 'en', true);
     });
 
     /* ======== FOOTER YEAR ======== */
@@ -359,7 +397,7 @@
           })
         );
 
-        setLang(LANG);
+        setLang(LANG, false);
       } catch (err) {
         console.error('Failed to load config:', err);
       }
