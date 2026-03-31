@@ -74,6 +74,16 @@
       "role": "Blue Team Developer",
       "tag": ["Python", "Cyber Security"]
     },
+      {
+      "repo": "https://github.com/asimov-hy/CV25-Barad-dur",
+      "name": "Computer Vision - Anamoly Detection",
+      "description": {
+        "en": "Train a vision model to anamoly detection (using Yolo models)",
+        "ko": "욜로모델을 이용을 하여서 어노멀리 감지 모델을 훈련 및 튜닝"
+      },
+      "role": "Team Leader",
+      "tag": ["Python", "Computer Vision", "YOLO"]
+    },
     {
       "repo": null,
       "name": "Alice-M: Humanoid AI Project",
